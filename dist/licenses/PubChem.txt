@@ -1,0 +1,8 @@
+Molecular conformers and bond data: NCBI PubChem (US National Library of Medicine).
+Retrieved via PUG REST on 8 October 2026.
+CID 33032 (L-glutamic acid), 119 (GABA), 681 (dopamine),
+5202 (serotonin), 187 (acetylcholine), 439260 (norepinephrine).
+Individual PubChem URLs and identifiers accompany the structures in assets/neurotransmitters.json.
+PubChem reference structures represent individual conformers, not a model of synaptic protonation or a measured molecular trajectory.
+https://pubchem.ncbi.nlm.nih.gov/docs/3d-conformers
+https://pubchem.ncbi.nlm.nih.gov/docs/about

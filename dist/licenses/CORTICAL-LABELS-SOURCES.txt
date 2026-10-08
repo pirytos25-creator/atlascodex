@@ -1,0 +1,6 @@
+FreeSurfer fsaverage annotations and thresholded ex vivo labels
+Source: https://www.freesurfer.net/pub/dist/freesurfer/tutorial_versions_centos6/freesurfer/subjects/fsaverage/label/
+Yeo et al. 2011, J Neurophysiol, doi:10.1152/jn.00338.2011
+Brodmann labels: selected cytoarchitectonic fields supplied with fsaverage, not a complete map. Overlaps use first label in documented order.
+FreeSurfer Software License applies: https://surfer.nmr.mgh.harvard.edu/fswiki/FreeSurferSoftwareLicense
+Existing FreeSurfer license in this distribution also applies to these derivative data.

@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#101715" />
+    <title>Neuroatlas — interaktywny mózg 3D</title>
+    <meta
+      name="description"
+      content="Poznaj anatomię mózgu w 3D. Rzeczywiste powierzchnie fsaverage HD i animowana neurofizjologia, struktury głębokie, szlaki nerwowe i neuropsychologia kliniczna po polsku."
+    />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./refinement.css" />
+    <link rel="stylesheet" href="./readability.css" />
+    <script type="importmap">
+      { "imports": { "three": "./vendor/three.module.js" } }
+    </script>
+  </head>
+  <body data-mode="atlas">
+    <header class="header">
+      <a class="brand" href="./" aria-label="Neuroatlas — początek"
+        ><span class="brand-symbol">n.</span
+        ><span>neuro<span class="brand-light">atlas</span></span
+        ><span class="brand-edition">LAB</span></a
+      >
+      <nav class="main-nav" aria-label="Tryb nauki">
+        <button class="nav-tab active" data-mode="atlas">Atlas 3D</button
+        ><button class="nav-tab" data-mode="dissection">Przekroje</button
+        ><button class="nav-tab" data-mode="impulse">Impulsy</button
+        ><button class="nav-tab" data-mode="research">Badania</button
+        ><button class="nav-tab" data-mode="detailed">
+          Anatomia szczegółowa</button
+        ><button class="nav-tab" data-mode="transmitters">
+          Neuroprzekaźniki</button
+        ><button class="nav-tab" data-mode="biofeedback">Biofeedback</button
+        ><button class="nav-tab" data-mode="vascular">Unaczynienie i udary</button
+        ><button class="nav-tab" data-mode="networks">Sieci funkcjonalne</button
+        ><button class="nav-tab" data-mode="tests">Pracownia testów</button
+        ><button class="nav-tab" data-mode="comparative">Anatomia porównawcza</button
+        ><button class="nav-tab" data-mode="tours">Ścieżki nauki</button
+        ><button class="nav-tab" data-mode="quiz">Sprawdź wiedzę</button>
+      </nav>
+      <div class="header-end">
+        <span class="degree">NEUROPSYCHOLOGIA · II STOPIEŃ</span
+        ><button
+          id="sources"
+          class="icon-button"
+          aria-label="Źródła i informacje o modelu"
+          title="Źródła i model"
+          data-icon="book"
+        ></button
+        ><button
+          id="help"
+          class="icon-button"
+          aria-label="Jak korzystać z atlasu"
+          title="Sterowanie"
+          data-icon="help"
+        ></button>
+      </div>
+    </header>
+    <main class="app">
+      <aside class="sidebar">
+        <div class="sidebar-heading">
+          <span class="eyebrow">ATLAS ANATOMICZNY</span>
+          <h1>Odkrywaj mózg<span class="accent">.</span></h1>
+          <p>Od struktury do funkcji poznawczej.</p>
+        </div>
+        <label class="search"
+          ><span data-icon="search"></span
+          ><input
+            id="search"
+            type="search"
+            placeholder="Znajdź strukturę…"
+            autocomplete="off"
+            aria-label="Szukaj struktury mózgu"
+          /><kbd>/</kbd></label
+        >
+        <div class="sidebar-tabs" role="group" aria-label="Rodzaj struktur">
+          <button class="active" data-category="cortex">Kora</button
+          ><button data-category="deep">Głębokie</button
+          ><button data-category="tracts">Drogi</button>
+        </div>
+        <div class="hemis" aria-label="Półkula w spisie">
+          <span>PÓŁKULA</span>
+          <div>
+            <button class="active" data-hemi="lh">Lewa</button
+            ><button data-hemi="rh">Prawa</button>
+          </div>
+        </div>
+        <div
+          id="structure-list"
+          class="structure-list"
+          aria-live="polite"
+        ></div>
+        <div class="sidebar-footer">
+          <span data-icon="layers"></span>
+          <div>
+            <strong id="structure-count">Wczytywanie atlasu</strong
+            ><small>fsaverage HD · Desikan–Killiany</small>
+          </div>
+        </div>
+      </aside>
+      <section class="workspace" aria-label="Interaktywny model mózgu 3D">
+        <div
+          class="viewport"
+          id="viewport"
+          tabindex="0"
+          aria-label="Mózg 3D. Obracaj przeciągając. Przybliżaj kółkiem myszy. Kliknij strukturę, aby otworzyć opis."
+        >
+          <div id="canvas-host"></div>
+          <div class="viewport-title">
+            <span class="eyebrow">PRZESTRZEŃ EKSPLORACJI</span>
+            <div>Mózg człowieka <span>3D</span></div>
+          </div>
+          <div class="viewport-top-actions">
+            <button
+              id="sidebar-toggle"
+              class="chip"
+              aria-label="Otwórz spis struktur"
+            >
+              Spis</button
+            ><button
+              id="overview"
+              class="chip"
+              title="Widok ogólny tej sceny (Home); dwuklik tła"
+              aria-label="Wróć do widoku ogólnego bieżącej sceny"
+            >Widok ogólny</button
+            ><button
+              id="panel-toggle"
+              class="chip"
+              aria-pressed="false"
+              aria-label="Przełącz widok immersyjny"
+            >
+              Widok immersyjny</button
+            ><button id="labels-toggle" class="chip active" aria-pressed="true">
+              <span data-icon="pin"></span>Przypisy</button
+            ><button id="fly" class="chip" aria-pressed="false">
+              <span data-icon="compass"></span>Swobodny lot</button
+            ><button
+              id="detail-toggle"
+              class="icon-button"
+              aria-label="Zmień dokładność modelu"
+              aria-pressed="true"
+              title="Pełna siatka HD. Kliknij, aby przełączyć na lżejszą siatkę SD."
+            >
+              HD</button
+            ><button
+              id="fullscreen"
+              class="icon-button"
+              aria-label="Pełny ekran"
+              title="Pełny ekran"
+              data-icon="expand"
+            ></button>
+          </div>
+          <div class="orientation">
+            <span id="view-label">WIDOK LEWY BOCZNY</span
+            ><span
+              class="orientation-axes"
+              title="R: prawa strona · A: przód · S: góra"
+              ><svg
+                id="anatomical-axes"
+                viewBox="0 0 64 64"
+                role="img"
+                aria-label="Osie anatomiczne: R prawa, A przód, S góra"
+              >
+                <circle cx="30" cy="30" r="2" fill="#8eae9a" />
+                <g data-axis="R" stroke="#daa5a0" fill="#daa5a0">
+                  <line x1="30" y1="30" x2="30" y2="30" />
+                  <text>R</text>
+                </g>
+                <g data-axis="A" stroke="#a5d3aa" fill="#a5d3aa">
+                  <line x1="30" y1="30" x2="30" y2="30" />
+                  <text>A</text>
+                </g>
+                <g data-axis="S" stroke="#a7c6dc" fill="#a7c6dc">
+                  <line x1="30" y1="30" x2="30" y2="30" />
+                  <text>S</text>
+                </g>
+              </svg></span
+            >
+          </div>
+          <svg
+            id="selection-leader"
+            class="selection-leader"
+            aria-hidden="true"
+            hidden
+          >
+            <path pathLength="1" />
+            <circle r="7" />
+          </svg>
+          <div id="labels-layer" class="labels-layer"></div>
+          <div id="crosshair" class="crosshair" hidden>+</div>
+          <div id="loading" class="loading">
+            <span class="loader"></span><strong>Przygotowuję atlas 3D</strong
+            ><span>Powierzchnia kory i struktury podkorowe</span>
+          </div>
+          <div id="hover-name" class="hover-name" hidden></div>
+          <aside
+            class="annotation"
+            id="annotation"
+            aria-label="Opis wybranej struktury"
+          >
+            <div class="annotation-bar">
+              <span class="eyebrow">WYBRANA STRUKTURA</span
+              ><button
+                id="close-note"
+                class="icon-button"
+                aria-label="Odznacz strukturę i wróć do poprzedniego kadru"
+                data-icon="close"
+              ></button>
+            </div>
+            <div id="note-content"></div>
+          </aside>
+          <div id="mode-panel" class="mode-panel" hidden></div>
+          <div class="view-presets" aria-label="Ustaw kamerę">
+            <button class="active" data-view="left" title="Widok lewy">L</button
+            ><button data-view="right" title="Widok prawy">P</button
+            ><button data-view="front" title="Widok przedni">A</button
+            ><button data-view="back" title="Widok tylny">T</button
+            ><button data-view="top" title="Widok górny">G</button
+            ><button data-view="bottom" title="Widok dolny">D</button
+            ><span></span
+            ><button
+              id="reset"
+              title="Widok ogólny bieżącej sceny (Home)"
+              aria-label="Widok ogólny bieżącej sceny"
+              data-icon="reset"
+            ></button>
+          </div>
+          <div class="canvas-hint" id="canvas-hint">
+            <span><span data-icon="mouse"></span>LPM: obrót · PPM: przesuwanie</span
+            ><span>Kółko: zoom · Esc: odznacz · Home: całość</span>
+          </div>
+          <div class="model-credit">
+            MODEL SZABLONOWY <span>·</span>
+            <button id="model-info">O modelu</button>
+          </div>
+        </div>
+        <div class="controls">
+          <div class="control-group">
+            <span class="control-title">WIDOCZNOŚĆ</span>
+            <div class="segmented">
+              <button id="show-left" class="active" aria-pressed="true">
+                Lewa</button
+              ><button id="show-right" class="active" aria-pressed="true">
+                Prawa
+              </button>
+            </div>
+          </div>
+          <div class="control-group opacity-group">
+            <label class="control-title" for="opacity"
+              >PRZEZROCZYSTOŚĆ KORY
+              <output id="opacity-value">0%</output></label
+            ><input
+              id="opacity"
+              type="range"
+              min="0"
+              max="95"
+              value="0"
+              aria-label="Przezroczystość kory"
+            />
+          </div>
+          <div class="control-group">
+            <span class="control-title">WARSTWY</span>
+            <div class="layer-buttons">
+              <button id="deep-toggle" class="active" aria-pressed="true">
+                Struktury głębokie</button
+              ><button id="tract-toggle" aria-pressed="false">
+                Połączenia
+              </button>
+            </div>
+          </div>
+          <div class="control-group section-group">
+            <label class="control-title" for="section">PRZEKRÓJ</label>
+            <div class="section-row">
+              <select id="section" aria-label="Płaszczyzna przekroju">
+                <option value="none">Cały mózg</option>
+                <option value="sagittal">Strzałkowy</option>
+                <option value="coronal">Czołowy</option>
+                <option value="axial">Poprzeczny</option></select
+              ><input
+                id="slice"
+                type="range"
+                min="-100"
+                max="100"
+                value="0"
+                aria-label="Położenie przekroju"
+                disabled
+              />
+            </div>
+          </div>
+          <button
+            id="color-mode"
+            class="color-mode"
+            aria-pressed="false"
+            title="Kolory płatów"
+          >
+            <span data-icon="palette"></span><span>Kolory płatów</span>
+          </button>
+        </div>
+        <footer class="statusbar">
+          <span id="selection-status"
+            >Wybierz strukturę w modelu lub spisie.</span
+          ><span
+            ><span id="world-scale">1 jednostka = 40 mm</span> <i>·</i>
+            <span id="mesh-count"></span
+          ></span>
+        </footer>
+      </section>
+    </main>
+    <dialog id="dialog">
+      <div class="dialog-head">
+        <span class="eyebrow" id="dialog-eyebrow"></span
+        ><button
+          id="dialog-close"
+          class="icon-button"
+          aria-label="Zamknij okno"
+          data-icon="close"
+        ></button>
+      </div>
+      <div id="dialog-content"></div>
+    </dialog>
+    <div id="toast" class="toast" role="status" hidden></div>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
