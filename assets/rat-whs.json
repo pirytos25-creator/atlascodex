@@ -1,0 +1,14 @@
+{
+  "vertices": 50114,
+  "triangles": 99999,
+  "dimensionsMm": [
+    17.80707550048828,
+    14.599925994873047,
+    39.784034729003906
+  ],
+  "sourceSha256": "0e07dff9911e30e5fdaaa6250b6a8a640a3b2a31203955a68b0bbdeeafa493eb",
+  "source": "https://atlas.dandiarchive.org/data/atlases/whs_sd/meshes/9999.glb?v=20260519",
+  "atlas": "Waxholm Space Sprague Dawley rat v4 (root mask)",
+  "license": "CC BY 4.0",
+  "modifications": "RAS rotation and centering; no further simplification. DANDI mesh is already a simplified atlas-mask surface."
+}

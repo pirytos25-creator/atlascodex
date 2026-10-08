@@ -1,0 +1,53 @@
+{
+  "source": "https://www.freesurfer.net/pub/dist/freesurfer/tutorial_versions_centos6/freesurfer/subjects/fsaverage/label/",
+  "method": "Yeo 7 networks, fsaverage annotations; selected ex vivo thresholded BA labels. SD mapped by canonical vertex indices verified against geometry.",
+  "brodmannFields": [
+    "1",
+    "2",
+    "3a",
+    "3b",
+    "4a",
+    "4p",
+    "6",
+    "44",
+    "45"
+  ],
+  "surfaces": {
+    "high-lh": {
+      "file": "cortical-labels-high-lh.bin",
+      "vertices": 163842,
+      "channels": [
+        "Yeo7",
+        "selectedBA"
+      ],
+      "mapping": "canonical nested vertex indices"
+    },
+    "low-lh": {
+      "file": "cortical-labels-low-lh.bin",
+      "vertices": 10242,
+      "channels": [
+        "Yeo7",
+        "selectedBA"
+      ],
+      "mapping": "canonical nested vertex indices"
+    },
+    "high-rh": {
+      "file": "cortical-labels-high-rh.bin",
+      "vertices": 163842,
+      "channels": [
+        "Yeo7",
+        "selectedBA"
+      ],
+      "mapping": "canonical nested vertex indices"
+    },
+    "low-rh": {
+      "file": "cortical-labels-low-rh.bin",
+      "vertices": 10242,
+      "channels": [
+        "Yeo7",
+        "selectedBA"
+      ],
+      "mapping": "canonical nested vertex indices"
+    }
+  }
+}

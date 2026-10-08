@@ -1,0 +1,30 @@
+Neuroatlas — animal geometry provenance
+
+rat-whs-positions.bin, rat-whs-indices.bin, rat-whs.json:
+Waxholm Space atlas of the Sprague Dawley rat brain, v4.
+Kleven H, Bjerke IE, Clasca F, Groenewegen HJ, Bjaalie JG, Leergaard TB (2023).
+Waxholm Space atlas of the rat brain: a 3D atlas supporting data analysis and integration.
+Nature Methods. https://pubmed.ncbi.nlm.nih.gov/37783883/
+Atlas source and verified license: https://www.nitrc.org/projects/whs-sd-atlas
+License: Creative Commons Attribution 4.0 International (CC BY 4.0).
+https://creativecommons.org/licenses/by/4.0/
+Original MRI specimen: 80-day-old male Sprague Dawley rat, Duke Center for In Vivo Microscopy.
+Acknowledgment: Neural Systems Laboratory, University of Oslo; Duke Center for In Vivo Microscopy.
+
+Surface extraction/simplification: DANDI atlas project, root mask, 99,999 triangles.
+Downloaded 2026-10-08 from:
+https://atlas.dandiarchive.org/data/atlases/whs_sd/meshes/9999.glb?v=20260519
+Pipeline: https://github.com/dandi/dandi-atlas/blob/main/scripts/build_rat_atlas.py
+Local conversion: tools/prepare-animal-mesh.py.
+Changes: converted coordinates from RAS to the application's presentation axes,
+centered geometry, extracted positions and triangle indices. No further simplification.
+Source SHA-256 and dimensions recorded in assets/rat-whs.json.
+This surface is the whole atlas mask, not a segmented cortical pial surface.
+Highlighted animal regions are separate schematic markers, not atlas segmentations.
+
+Macaque, dog and cat: original schematic ellipsoid-based geometry generated in
+comparative-lab.js. It does not derive from a transformed human mesh or MRI data.
+Schematic folding is regular and does not represent anatomical sulci.
+No CATLAS or macaque atlas data with unverified redistribution terms is bundled.
+
+Human: existing FreeSurfer fsaverage pial / aseg surfaces. See FreeSurfer.txt.
